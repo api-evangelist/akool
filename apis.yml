@@ -1,0 +1,201 @@
+aid: akool
+url: https://raw.githubusercontent.com/api-evangelist/akool/refs/heads/main/apis.yml
+name: Akool
+kind: company
+description: Akool is a generative AI platform for video and imagery - talking
+  avatars, talking photos, face swap, video translation with lip-sync, background
+  change, image generation, and a real-time streaming (live) avatar product. The
+  Akool OpenAPI exposes these tools as an HTTPS REST API under
+  https://openapi.akool.com, authenticated with a Bearer token minted from a
+  clientId / clientSecret pair (or a direct x-api-key). Generation is asynchronous -
+  callers create a task, then poll by id or receive an encrypted webhook callback
+  when the task completes. The Live Avatar product opens a real-time session whose
+  media is carried over a third-party WebRTC transport (Agora, LiveKit, or TRTC).
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- AI Avatars
+- Video Generation
+- AI Video
+- Face Swap
+- Generative AI
+- Talking Avatar
+- Video Translation
+- Live Avatar
+created: '2026-07-11'
+modified: '2026-07-11'
+specificationVersion: '0.19'
+apis:
+- aid: akool:akool-talking-avatar-api
+  name: Akool Talking Avatar API
+  tags:
+  - AI Avatars
+  - Talking Avatar
+  - Video Generation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.akool.com/ai-tools-suite/talking-avatar
+  baseURL: https://openapi.akool.com
+  properties:
+  - url: https://docs.akool.com/ai-tools-suite/talking-avatar
+    type: Documentation
+  - url: https://docs.akool.com/ai-tools-suite/talking-avatar
+    type: APIReference
+  - url: openapi/akool-openapi.yml
+    type: OpenAPI
+  - url: collections/akool.postman_collection.json
+    type: PostmanCollection
+  - url: collections/akool.opencollection.json
+    type: OpenCollection
+  description: Generate an expressive, speaking avatar video from an Akool or
+    user-supplied avatar plus text or an audio track. Create a task with POST
+    /api/open/v3/talkingavatar/create using an avatar_id, voice_id, and input_text
+    (or a pre-generated audio url), then poll by _id until video_status is
+    completed. Strong fit for the "AI avatars" and "video generation" use cases.
+- aid: akool:akool-talking-photo-api
+  name: Akool Talking Photo API
+  tags:
+  - AI Avatars
+  - Talking Photo
+  - Video Generation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.akool.com/ai-tools-suite/talking-photo
+  baseURL: https://openapi.akool.com
+  properties:
+  - url: https://docs.akool.com/ai-tools-suite/talking-photo
+    type: Documentation
+  - url: https://docs.akool.com/ai-tools-suite/talking-photo/create-video
+    type: APIReference
+  - url: openapi/akool-openapi.yml
+    type: OpenAPI
+  - url: collections/akool.postman_collection.json
+    type: PostmanCollection
+  - url: collections/akool.opencollection.json
+    type: OpenCollection
+  description: Turn a still portrait into a talking video by pairing a
+    talking_photo_url with an audio_url. Create with POST
+    /api/open/v3/content/video/createbytalkingphoto (optional prompt for gestures,
+    720p or 1080p resolution, webhookUrl), then poll status with GET
+    /api/open/v3/content/video/infobymodelid.
+- aid: akool:akool-face-swap-api
+  name: Akool Face Swap API
+  tags:
+  - Face Swap
+  - AI Video
+  - Generative AI
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.akool.com/ai-tools-suite/faceswap
+  baseURL: https://openapi.akool.com
+  properties:
+  - url: https://docs.akool.com/ai-tools-suite/faceswap
+    type: Documentation
+  - url: https://docs.akool.com/ai-tools-suite/faceswap/faceswap-plus
+    type: APIReference
+  - url: openapi/akool-openapi.yml
+    type: OpenAPI
+  - url: collections/akool.postman_collection.json
+    type: PostmanCollection
+  - url: collections/akool.opencollection.json
+    type: OpenCollection
+  description: Swap a source face onto a target image or video, single-face or
+    multi-face via a face_mapping array, with model_style and face_enhance options.
+    Create with POST /api/open/v4/faceswap/faceswapPlusByImage, retrieve results
+    with GET /api/open/v3/faceswap/result/listbyids. Video jobs are asynchronous
+    (poll or webhook).
+- aid: akool:akool-video-translation-api
+  name: Akool Video Translation API
+  tags:
+  - Video Translation
+  - AI Video
+  - Lip Sync
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.akool.com/ai-tools-suite/video-translation
+  baseURL: https://openapi.akool.com
+  properties:
+  - url: https://docs.akool.com/ai-tools-suite/video-translation
+    type: Documentation
+  - url: https://docs.akool.com/ai-tools-suite/video-translation/create-translation
+    type: APIReference
+  - url: openapi/akool-openapi.yml
+    type: OpenAPI
+  - url: collections/akool.postman_collection.json
+    type: PostmanCollection
+  - url: collections/akool.opencollection.json
+    type: OpenCollection
+  description: Translate a source video into one or more target languages with
+    optional lip-sync, speaker detection, background-music removal, and caption
+    handling. List supported languages with GET /api/open/v3/language/list, create
+    with POST /api/open/v3/content/video/createbytranslate, then poll by _id until
+    video_status is completed.
+- aid: akool:akool-image-generation-api
+  name: Akool Image Generation API
+  tags:
+  - Generative AI
+  - Image Generation
+  - Text to Image
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.akool.com/ai-tools-suite/image-generate/image-generate
+  baseURL: https://openapi.akool.com
+  properties:
+  - url: https://docs.akool.com/ai-tools-suite/image-generate/image-generate
+    type: Documentation
+  - url: https://docs.akool.com/ai-tools-suite/image-generate/create-by-source-prompt
+    type: APIReference
+  - url: openapi/akool-openapi.yml
+    type: OpenAPI
+  - url: collections/akool.postman_collection.json
+    type: PostmanCollection
+  - url: collections/akool.opencollection.json
+    type: OpenCollection
+  description: Text-to-image and image-to-image generation on Flux-family models,
+    with aspect-ratio, resolution (up to 4k), and batch (1-4) controls. Create with
+    POST /api/open/v4/content/image/createBySourcePrompt, then poll status with GET
+    /api/open/v3/content/image/infobymodelid.
+- aid: akool:akool-live-avatar-api
+  name: Akool Live Avatar (Streaming) API
+  tags:
+  - AI Avatars
+  - Live Avatar
+  - Real Time
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.akool.com/ai-tools-suite/live-avatar
+  baseURL: https://openapi.akool.com
+  properties:
+  - url: https://docs.akool.com/ai-tools-suite/live-avatar
+    type: Documentation
+  - url: https://docs.akool.com/ai-tools-suite/live-avatar/create-session
+    type: APIReference
+  - url: openapi/akool-openapi.yml
+    type: OpenAPI
+  - url: https://docs.akool.com/openapi/live-avatar.yaml
+    type: OpenAPI
+  - url: collections/akool.postman_collection.json
+    type: PostmanCollection
+  - url: collections/akool.opencollection.json
+    type: OpenCollection
+  description: Real-time, interactive streaming avatars. The REST control plane
+    lists avatars (GET /api/open/v4/liveAvatar/avatar/list) and manages sessions
+    (create, list, detail, close). Session media is NOT a documented Akool
+    WebSocket - it is carried over a caller-selected third-party WebRTC transport
+    (stream_type agora, livekit, or trtc) whose credentials you pass on
+    POST /api/open/v4/liveAvatar/session/create.
+common:
+- type: Authentication
+  url: authentication/akool-authentication.yml
+- type: GitHubOrganization
+  url: https://github.com/AKOOL-Official
+- type: LinkedIn
+  url: https://www.linkedin.com/company/akoolai
+- type: Website
+  url: https://akool.com
+- type: Documentation
+  url: https://docs.akool.com
+- type: Plans
+  url: plans/akool-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/akool-rate-limits.yml
+- type: FinOps
+  url: finops/akool-finops.yml
+- url: https://akool.com/blog
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,103 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Akool
+providerId: akool
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- AI Avatars
+- Video Generation
+- Generative AI
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Akool spend. Akool bills on a subscription-plus-credit model:
+  a monthly (or annual, for Enterprise) seat subscription includes a credit
+  allowance, and every generation - talking avatar, talking photo, face swap,
+  video translation, image generation, and live avatar streaming - deducts
+  credits at a per-operation rate that scales with output settings such as
+  resolution and length. Beyond the included allowance, Pro and Pro Max buy
+  additional credit packs pay-as-you-go, Business gets the lowest per-credit
+  cost, and Enterprise credits do not expire. The dominant cost driver is credit
+  consumption per generated asset; the API itself carries no separate
+  transaction fee beyond the credits each job spends.
+notes: >-
+  Per-unit credit rates and seat prices are not reconciled here; verify the
+  per-product credit-consumption chart and seat/credit-pack pricing on the live
+  pricing and API-pricing pages. Note also that generated assets are retained
+  for only 7 days, so any long-term storage cost shifts to the consumer's own
+  infrastructure.
+sources:
+- https://akool.com/pricing
+- https://akool.com/openapi
+- https://docs.akool.com/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Akool
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Subscription-Plus-Usage
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Akool OpenAPI
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Akool
+  PublisherName: Akool
+  InvoiceIssuerName: Akool
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Subscription-Plus-Usage
+meters:
+- name: credits_consumed
+  description: Credits deducted per generation, varying by product and output settings (resolution, length).
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - product
+  - resolution
+- name: subscription_seats
+  description: Monthly or annual seat subscription that includes a base credit allowance.
+  unit: seats
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: credit_packs
+  description: Additional pay-as-you-go credit packs purchased above the included allowance.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+- name: concurrent_generations
+  description: Concurrent-job ceiling per plan; higher concurrency is a paid capability rather than a metered charge.
+  unit: jobs
+  aggregation: max
+  dimensions:
+  - account
+  - plan
+principles:
+- name: Visibility
+  description: Track credits consumed per product and per output setting; watch resolution and length, which drive per-job credit cost.
+- name: Allocation
+  description: Map credit consumption to teams/workloads by tagging generation jobs at the application layer, since Akool bills at the account level.
+- name: Optimization
+  description: Generate at the lowest acceptable resolution and length, batch image requests, prefer webhooks over tight polling, and buy credits at the tier with the lowest per-credit cost (Business) for steady volume.
+- name: Accountability
+  description: Assign an owner for the Akool account, monitor monthly credit burn against the included allowance, and re-download assets before the 7-day retention window closes.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

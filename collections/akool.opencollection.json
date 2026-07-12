@@ -1,0 +1,175 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool OpenAPI",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Authentication", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get API token", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/getToken",
+            "body": { "type": "json", "data": "{\"clientId\":\"\",\"clientSecret\":\"\"}" }
+          },
+          "docs": "Exchange clientId and clientSecret for a Bearer token."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Talking Avatar", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create talking avatar video", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/talkingavatar/create",
+            "body": { "type": "json", "data": "{\"avatar_from\":2,\"avatar_id\":\"\",\"voice_id\":\"\",\"input_text\":\"Hello from Akool\"}" }
+          },
+          "docs": "Generate a speaking avatar video from text or audio. Poll status by the returned _id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Talking Photo", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create talking photo video", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/content/video/createbytalkingphoto",
+            "body": { "type": "json", "data": "{\"talking_photo_url\":\"\",\"audio_url\":\"\",\"resolution\":\"1080p\"}" }
+          },
+          "docs": "Animate a still portrait with an audio track."
+        },
+        {
+          "info": { "name": "Poll video status", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/content/video/infobymodelid",
+            "params": [
+              { "name": "video_model_id", "value": "", "type": "query", "description": "The _id returned by a create request." }
+            ]
+          },
+          "docs": "Poll a content video task by its model id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Face Swap", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Face swap by image", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/faceswap/faceswapPlusByImage",
+            "body": { "type": "json", "data": "{\"source_url\":\"\",\"target_url\":\"\",\"single_face_mode\":true,\"model_style\":\"realistic\"}" }
+          },
+          "docs": "Swap a source face onto a target image or video."
+        },
+        {
+          "info": { "name": "Get face swap results by ids", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/faceswap/result/listbyids",
+            "params": [
+              { "name": "_ids", "value": "", "type": "query", "description": "Comma-separated result ids." }
+            ]
+          },
+          "docs": "Retrieve face swap results by a comma-separated list of ids."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Video Translation", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List supported languages", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/language/list"
+          },
+          "docs": "List languages supported for video translation."
+        },
+        {
+          "info": { "name": "Create video translation", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/content/video/createbytranslate",
+            "body": { "type": "json", "data": "{\"url\":\"\",\"language\":\"Spanish,French\",\"source_language\":\"DEFAULT\",\"lipsync\":true}" }
+          },
+          "docs": "Translate a video into one or more target languages with optional lip-sync."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Image Generation", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Generate image by source prompt", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/content/image/createBySourcePrompt",
+            "body": { "type": "json", "data": "{\"prompt\":\"a cinematic portrait\",\"scale\":\"1:1\",\"resolution\":\"4k\",\"batch_quantity\":1}" }
+          },
+          "docs": "Text-to-image or image-to-image generation."
+        },
+        {
+          "info": { "name": "Poll image status", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/content/image/infobymodelid",
+            "params": [
+              { "name": "image_model_id", "value": "", "type": "query", "description": "The _id returned by a create request." }
+            ]
+          },
+          "docs": "Poll an image generation task by its model id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Live Avatar", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List streaming avatars", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v4/liveAvatar/avatar/list",
+            "params": [
+              { "name": "page", "value": "1", "type": "query" },
+              { "name": "size", "value": "20", "type": "query" }
+            ]
+          },
+          "docs": "List available streaming avatars."
+        },
+        {
+          "info": { "name": "Create live avatar session", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/liveAvatar/session/create",
+            "body": { "type": "json", "data": "{\"avatar_id\":\"\",\"stream_type\":\"agora\",\"agora_channel\":\"\",\"agora_token\":\"\",\"agora_uid\":0}" }
+          },
+          "docs": "Open a real-time streaming avatar session. Media rides a caller-selected WebRTC transport (agora, livekit, or trtc) - not an Akool WebSocket."
+        },
+        {
+          "info": { "name": "Close live avatar session", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/liveAvatar/session/close",
+            "body": { "type": "json", "data": "{\"id\":\"\"}" }
+          },
+          "docs": "Close an open streaming avatar session by id."
+        }
+      ]
+    }
+  ]
+}

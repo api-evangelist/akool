@@ -1,0 +1,119 @@
+aid: akool
+name: Akool
+review:
+  question: Does Akool expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Akool's own public API surface
+    (openapi.akool.com) is request/response REST over HTTPS with asynchronous
+    create-then-poll semantics and an outbound encrypted webhook callback -
+    there is no server-push transport (WebSocket or SSE) on Akool's own API to
+    model. Akool's real-time Live Avatar product IS bidirectional and
+    low-latency, but the media stream is not carried by an Akool-operated
+    WebSocket: the caller selects a third-party WebRTC transport (Agora,
+    LiveKit, or TRTC) and passes that provider's credentials into the session.
+    A WebRTC media session is not a documented Akool WebSocket API, so no
+    AsyncAPI (which models message channels/operations on the API owner's own
+    broker) is appropriate here.
+findings:
+  summary: |
+    Akool does not publish a documented public WebSocket API. Akool is a
+    generative AI platform (talking avatars, talking photos, face swap, video
+    translation, image generation, and a real-time "Live/Streaming Avatar"
+    product). Its public API, the Akool OpenAPI, lives at
+    https://openapi.akool.com and is pure request/response REST over HTTPS,
+    authenticated with an `Authorization: Bearer {token}` header (token minted
+    from a clientId / clientSecret at POST /api/open/v3/getToken) or a direct
+    `x-api-key` header. Generation is asynchronous: a caller POSTs a create
+    request, then either polls a status endpoint by id (video_status /
+    image_status / faceswap_status 1=queueing, 2=processing, 3=completed,
+    4=failed) or receives an encrypted HTTP webhook callback on completion. No
+    ws:// or wss:// endpoint is documented anywhere in Akool's API reference.
+  liveAvatarTransport: |
+    Akool's Live Avatar (Streaming Avatar) is the only real-time, bidirectional
+    product, but it does NOT expose an Akool WebSocket. The REST control plane
+    (POST /api/open/v4/liveAvatar/session/create) returns a session whose media
+    is exchanged over a caller-selected third-party WebRTC SDK - stream_type
+    "agora" (default), "livekit", or "trtc". The caller provides that provider's
+    credentials (agora_channel/agora_token, or livekit_url/livekit_token, etc.),
+    and the client connects with that provider's SDK (AgoraRTC.createClient(),
+    room.connect(), or client.enterRoom()). WebRTC media transport belongs to
+    Agora/LiveKit/Tencent, not to a documented Akool WebSocket API. Akool also
+    ships a JS Streaming Avatar SDK and a LiveKit Agent integration guide that
+    wrap these same WebRTC transports.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://openapi.akool.com
+      documented: true
+      note: All create, poll, list, and session-control endpoints are HTTPS REST under /api/open/v3 and /api/open/v4.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: On task completion Akool POSTs an encrypted callback (dataEncrypt AES-256-CBC, SHA-1 signature over clientId/timestamp/nonce/dataEncrypt) to a caller-supplied webhookUrl. Server-to-endpoint HTTP, not WebSocket.
+    - protocol: WebRTC
+      scheme: wss/udp
+      documented: true
+      note: Live Avatar media rides a third-party WebRTC transport (Agora, LiveKit, or TRTC) chosen and credentialed by the caller. This is not an Akool-operated WebSocket API; the transport and its signaling belong to the RTC vendor.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No Akool-operated WebSocket (ws:// or wss://) endpoint is documented in Akool's API reference as of the review date.
+  endpointsConfirmedRest:
+    - POST https://openapi.akool.com/api/open/v3/getToken
+    - POST https://openapi.akool.com/api/open/v3/talkingavatar/create
+    - POST https://openapi.akool.com/api/open/v3/content/video/createbytalkingphoto
+    - GET  https://openapi.akool.com/api/open/v3/content/video/infobymodelid
+    - POST https://openapi.akool.com/api/open/v4/faceswap/faceswapPlusByImage
+    - GET  https://openapi.akool.com/api/open/v3/faceswap/result/listbyids
+    - GET  https://openapi.akool.com/api/open/v3/language/list
+    - POST https://openapi.akool.com/api/open/v3/content/video/createbytranslate
+    - POST https://openapi.akool.com/api/open/v4/content/image/createBySourcePrompt
+    - GET  https://openapi.akool.com/api/open/v3/content/image/infobymodelid
+    - GET  https://openapi.akool.com/api/open/v4/liveAvatar/avatar/list
+    - POST https://openapi.akool.com/api/open/v4/liveAvatar/session/create
+    - POST https://openapi.akool.com/api/open/v4/liveAvatar/session/close
+sources:
+  - url: https://docs.akool.com/
+    type: Documentation
+    note: AI Tools Suite index; lists all products and links llms.txt and published OpenAPI files.
+  - url: https://docs.akool.com/authentication/usage
+    type: Documentation
+    note: Token via POST /api/open/v3/getToken from clientId/clientSecret, or direct x-api-key; base https://openapi.akool.com/api/. All REST.
+  - url: https://docs.akool.com/ai-tools-suite/talking-avatar
+    type: APIReference
+    note: POST /api/open/v3/talkingavatar/create; poll by _id. REST.
+  - url: https://docs.akool.com/ai-tools-suite/talking-photo/create-video
+    type: APIReference
+    note: POST /api/open/v3/content/video/createbytalkingphoto; poll /content/video/infobymodelid. REST.
+  - url: https://docs.akool.com/ai-tools-suite/faceswap/faceswap-plus
+    type: APIReference
+    note: POST /api/open/v4/faceswap/faceswapPlusByImage; results /faceswap/result/listbyids. REST + webhook.
+  - url: https://docs.akool.com/ai-tools-suite/video-translation/create-translation
+    type: APIReference
+    note: POST /api/open/v3/content/video/createbytranslate; languages /language/list. REST.
+  - url: https://docs.akool.com/ai-tools-suite/image-generate/create-by-source-prompt
+    type: APIReference
+    note: POST /api/open/v4/content/image/createBySourcePrompt; poll /content/image/infobymodelid. REST.
+  - url: https://docs.akool.com/ai-tools-suite/live-avatar/create-session
+    type: APIReference
+    note: POST /api/open/v4/liveAvatar/session/create; stream_type agora/livekit/trtc; caller supplies WebRTC credentials. No Akool WebSocket.
+  - url: https://docs.akool.com/implementation-guide/streaming-avatar
+    type: Documentation
+    note: Three WebRTC SDK options (Agora, LiveKit, TRTC); no proprietary Akool WebSocket transport.
+  - url: https://docs.akool.com/ai-tools-suite/webhook
+    type: Documentation
+    note: Encrypted webhook callback (dataEncrypt AES-256-CBC, SHA-1 signature) on task completion. HTTP callback, not WebSocket.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No Akool-operated WebSocket protocol surface exists. Akool's own public API
+    is request/response REST (create-then-poll) with an outbound encrypted
+    webhook. The only real-time product, Live Avatar, delegates its media
+    stream to a caller-selected third-party WebRTC transport (Agora, LiveKit, or
+    TRTC) rather than a documented Akool WebSocket, so no AsyncAPI document was
+    authored - there is no Akool-owned message channel to model.

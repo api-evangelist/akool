@@ -1,0 +1,182 @@
+{
+  "info": {
+    "name": "Akool OpenAPI",
+    "description": "Akool generative AI video and image API - Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming over WebRTC). Base URL: https://openapi.akool.com. Authenticate with an Authorization: Bearer token (from clientId/clientSecret at /api/open/v3/getToken) or an x-api-key header. Generation is asynchronous - create a task, then poll by id or receive an encrypted webhook. Modeled by API Evangelist from docs.akool.com.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{bearerToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://openapi.akool.com", "type": "string" },
+    { "key": "bearerToken", "value": "", "type": "string" },
+    { "key": "clientId", "value": "", "type": "string" },
+    { "key": "clientSecret", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get API token",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"clientId\": \"{{clientId}}\",\n  \"clientSecret\": \"{{clientSecret}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v3/getToken", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "getToken"] },
+            "description": "Exchange clientId and clientSecret for a Bearer token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Talking Avatar",
+      "item": [
+        {
+          "name": "Create talking avatar video",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"avatar_from\": 2,\n  \"avatar_id\": \"\",\n  \"voice_id\": \"\",\n  \"input_text\": \"Hello from Akool\",\n  \"width\": 1920,\n  \"height\": 1080\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v3/talkingavatar/create", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "talkingavatar", "create"] },
+            "description": "Generate a speaking avatar video from text or audio. Poll status by the returned _id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Talking Photo",
+      "item": [
+        {
+          "name": "Create talking photo video",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"talking_photo_url\": \"https://example.com/portrait.jpg\",\n  \"audio_url\": \"https://example.com/speech.mp3\",\n  \"resolution\": \"1080p\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v3/content/video/createbytalkingphoto", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "content", "video", "createbytalkingphoto"] },
+            "description": "Animate a still portrait with an audio track."
+          }
+        },
+        {
+          "name": "Poll video status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/open/v3/content/video/infobymodelid?video_model_id=", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "content", "video", "infobymodelid"], "query": [{ "key": "video_model_id", "value": "" }] },
+            "description": "Poll a content video task by its model id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Face Swap",
+      "item": [
+        {
+          "name": "Face swap by image",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"source_url\": \"https://example.com/new-face.jpg\",\n  \"target_url\": \"https://example.com/target.jpg\",\n  \"single_face_mode\": true,\n  \"model_style\": \"realistic\",\n  \"face_enhance\": true\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v4/faceswap/faceswapPlusByImage", "host": ["{{baseUrl}}"], "path": ["api", "open", "v4", "faceswap", "faceswapPlusByImage"] },
+            "description": "Swap a source face onto a target image or video."
+          }
+        },
+        {
+          "name": "Get face swap results by ids",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/open/v3/faceswap/result/listbyids?_ids=", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "faceswap", "result", "listbyids"], "query": [{ "key": "_ids", "value": "" }] },
+            "description": "Retrieve face swap results by a comma-separated list of ids."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Video Translation",
+      "item": [
+        {
+          "name": "List supported languages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/open/v3/language/list", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "language", "list"] },
+            "description": "List languages supported for video translation."
+          }
+        },
+        {
+          "name": "Create video translation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"url\": \"https://example.com/source.mp4\",\n  \"language\": \"Spanish,French\",\n  \"source_language\": \"DEFAULT\",\n  \"lipsync\": true\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v3/content/video/createbytranslate", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "content", "video", "createbytranslate"] },
+            "description": "Translate a video into one or more target languages with optional lip-sync."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Image Generation",
+      "item": [
+        {
+          "name": "Generate image by source prompt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"prompt\": \"a cinematic portrait, studio lighting\",\n  \"scale\": \"1:1\",\n  \"resolution\": \"4k\",\n  \"batch_quantity\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v4/content/image/createBySourcePrompt", "host": ["{{baseUrl}}"], "path": ["api", "open", "v4", "content", "image", "createBySourcePrompt"] },
+            "description": "Text-to-image or image-to-image generation."
+          }
+        },
+        {
+          "name": "Poll image status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/open/v3/content/image/infobymodelid?image_model_id=", "host": ["{{baseUrl}}"], "path": ["api", "open", "v3", "content", "image", "infobymodelid"], "query": [{ "key": "image_model_id", "value": "" }] },
+            "description": "Poll an image generation task by its model id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Live Avatar",
+      "item": [
+        {
+          "name": "List streaming avatars",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/open/v4/liveAvatar/avatar/list?page=1&size=20", "host": ["{{baseUrl}}"], "path": ["api", "open", "v4", "liveAvatar", "avatar", "list"], "query": [{ "key": "page", "value": "1" }, { "key": "size", "value": "20" }] },
+            "description": "List available streaming avatars."
+          }
+        },
+        {
+          "name": "Create live avatar session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"avatar_id\": \"\",\n  \"stream_type\": \"agora\",\n  \"agora_channel\": \"\",\n  \"agora_token\": \"\",\n  \"agora_uid\": 0\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v4/liveAvatar/session/create", "host": ["{{baseUrl}}"], "path": ["api", "open", "v4", "liveAvatar", "session", "create"] },
+            "description": "Open a real-time streaming avatar session. Media rides a caller-selected WebRTC transport (agora, livekit, or trtc) - not an Akool WebSocket."
+          }
+        },
+        {
+          "name": "Close live avatar session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/open/v4/liveAvatar/session/close", "host": ["{{baseUrl}}"], "path": ["api", "open", "v4", "liveAvatar", "session", "close"] },
+            "description": "Close an open streaming avatar session by id."
+          }
+        }
+      ]
+    }
+  ]
+}

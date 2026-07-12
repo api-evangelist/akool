@@ -1,0 +1,150 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Akool
+providerId: akool
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- AI Avatars
+- Video Generation
+- Face Swap
+- Generative AI
+- Plans
+description: >-
+  Akool sells its generative AI tools on a subscription plus credit model.
+  Published tiers are Starter, Pro, Pro Max, Business, and Enterprise (custom).
+  Higher tiers unlock higher video resolution, longer video length, and more
+  concurrent generations. Every product (talking avatar, talking photo, face
+  swap, video translation, image generation, live avatar) consumes credits at
+  its own per-operation rate, published on Akool's credit-consumption chart.
+  Pro and Pro Max are pay-as-you-go with credit packs and concurrency add-ons;
+  Business buys credits at the lowest unit cost; Enterprise credits do not
+  expire. API / OpenAPI access is gated to the higher tiers (Pro Max and above
+  per the pricing page). Exact monthly prices were not reconciled here because
+  the public pricing page rendered placeholder ($0) figures at capture time.
+notes: >-
+  Credit consumption is per-operation and varies by product and output settings
+  (resolution, length). Verify current seat prices, credit-pack pricing, the
+  per-product credit chart, and which tier includes API access on the live
+  pricing and API-pricing pages during reconciliation. API-generated resources
+  (image, video, voice) are valid for 7 days.
+sources:
+- https://akool.com/pricing
+- https://akool.com/openapi
+- https://docs.akool.com/
+plans:
+- id: akool-starter
+  name: Starter
+  type: subscription
+  description: >-
+    Entry tier for individuals. Lower resolution (up to 1080p), shorter video
+    length, and limited concurrent generations. Primarily UI-oriented; API
+    access is limited to higher tiers.
+  entries:
+  - label: Included Credits
+    name: starter_credits
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included monthly credit allowance (see pricing page)
+    userMultiplied: false
+  elements:
+  - name: Up to 1080p Video
+  - name: Talking Avatar and Talking Photo
+  - name: Face Swap
+  - name: Image Generation
+- id: akool-pro
+  name: Pro
+  type: subscription
+  description: >-
+    Pay-as-you-go tier with credit packs and concurrency options. Higher
+    resolution (up to 4K) and longer videos than Starter.
+  entries:
+  - label: Included Credits
+    name: pro_credits
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included allowance plus pay-as-you-go credit packs
+    userMultiplied: false
+  elements:
+  - name: Up to 4K Video
+  - name: Credit Packs
+  - name: Concurrency Options
+  - name: Video Translation
+- id: akool-pro-max
+  name: Pro Max
+  type: subscription
+  description: >-
+    Best-value pay-as-you-go tier with higher resolution (up to 8K), longer
+    videos, and API / OpenAPI access for programmatic generation.
+  entries:
+  - label: Included Credits
+    name: pro_max_credits
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included allowance plus pay-as-you-go credit packs
+    userMultiplied: false
+  elements:
+  - name: Up to 8K Video
+  - name: API / OpenAPI Access
+  - name: Live Avatar Streaming
+  - name: Higher Concurrency
+- id: akool-business
+  name: Business
+  type: subscription
+  description: >-
+    Team tier with the lowest per-credit cost, highest resolution (up to 16K),
+    and higher concurrency for production workloads.
+  entries:
+  - label: Included Credits
+    name: business_credits
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: lowest per-credit cost (see pricing page)
+    userMultiplied: false
+  elements:
+  - name: Lowest Credit Cost
+  - name: Up to 16K Video
+  - name: Team Features
+  - name: API / OpenAPI Access
+- id: akool-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom annual plan. Credits do not expire; negotiated volume, concurrency,
+    SLAs, and support. Contact Akool.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Non-Expiring Credits
+  - name: Custom Volume and Concurrency
+  - name: SLAs and Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

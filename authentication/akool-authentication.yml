@@ -1,0 +1,31 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/akool-openapi.yml
+summary:
+  types:
+  - http
+  - apiKey
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: >-
+    Bearer token minted by exchanging a clientId and clientSecret at
+    POST https://openapi.akool.com/api/open/v3/getToken. Passed on each request
+    as `Authorization: Bearer {token}`. Token expiry returns error code 1101.
+  sources:
+  - openapi/akool-openapi.yml
+  - https://docs.akool.com/authentication/usage
+- name: apiKeyAuth
+  type: apiKey
+  in: header
+  keyName: x-api-key
+  description: >-
+    Direct API key passed as the `x-api-key` request header. This is the method
+    Akool recommends because it needs no separate token-generation step. The
+    clientId/clientSecret are issued from the Akool OpenAPI settings once you
+    have an eligible plan.
+  sources:
+  - openapi/akool-openapi.yml
+  - https://docs.akool.com/authentication/usage
+  - https://help.akool.com/integrations/api-token

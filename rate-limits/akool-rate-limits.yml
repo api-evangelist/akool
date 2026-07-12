@@ -1,0 +1,70 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Akool
+providerId: akool
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- AI Avatars
+- Video Generation
+- Generative AI
+- Rate Limiting
+- Quotas
+description: >-
+  Akool does not publish fixed numeric per-minute request-rate limits for the
+  OpenAPI. In practice, throughput is governed by two things: your plan's
+  monthly credit allowance (every generation deducts credits) and your plan's
+  concurrent-generation limit (Starter allows roughly 2-4 concurrent jobs, with
+  higher and custom concurrency on Pro Max, Business, and Enterprise). Because
+  generation is asynchronous - create a task, then poll by id or await a webhook
+  - clients naturally pace themselves against the concurrency ceiling rather
+  than a per-second cap. Bearer tokens expire and must be refreshed (error code
+  1101 signals an expired or invalid token).
+notes: >-
+  Numeric per-account or per-endpoint request limits are not documented as of
+  the review date. The binding constraints are credit balance and concurrent-job
+  count per plan. Verify concurrency limits per tier and any burst limits on the
+  pricing and API-pricing pages during reconciliation. Generated resources are
+  retained for 7 days.
+sources:
+- https://docs.akool.com/authentication/usage
+- https://docs.akool.com/ai-tools-suite/error-code
+- https://akool.com/pricing
+responseCodes:
+  success: 1000
+  authInvalidOrExpired: 1101
+  authEmpty: 1102
+  accountBanned: 1200
+limits:
+- name: OpenAPI Request Rate
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric per-minute request-rate limit is documented for the OpenAPI.
+- name: Concurrent Generations
+  scope: account
+  metric: concurrent-jobs
+  limit: per plan (~2-4 on Starter, higher / custom on upper tiers)
+  notes: The primary throttle. Asynchronous jobs run against a per-plan concurrency ceiling.
+- name: Monthly Credit Allowance
+  scope: account
+  metric: credits
+  limit: per plan
+  notes: Every generation deducts credits; exhausting the allowance blocks further generation until topped up.
+- name: Token Lifetime
+  scope: account
+  metric: token
+  limit: expires
+  notes: Bearer tokens from /getToken expire; refresh on error code 1101. The x-api-key method avoids token refresh.
+policies:
+- name: Asynchronous Create-then-Poll
+  description: Generation endpoints return a task id immediately; clients poll the info endpoint by id or receive an encrypted webhook on completion rather than holding a long request open.
+- name: Credit Metering
+  description: Requests are metered by credits consumed per operation and per output setting (resolution, length), not by a request-count quota.
+- name: Backoff Strategy
+  description: Clients should poll with a reasonable interval and exponential backoff, and prefer webhooks over tight polling loops to reduce load.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

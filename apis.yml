@@ -178,6 +178,8 @@ apis:
     (stream_type agora, livekit, or trtc) whose credentials you pass on
     POST /api/open/v4/liveAvatar/session/create.
 common:
+- type: AgenticAccess
+  url: agentic-access/akool-agentic-access.yml
 - type: Authentication
   url: authentication/akool-authentication.yml
 - type: GitHubOrganization

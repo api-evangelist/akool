@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Akool Open Authentication Live Avatar API
+  description: 'The Akool OpenAPI exposes Akool''s generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool''s public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool''s own published OpenAPI files for exhaustive field detail.'
+  version: '1.0'
+  contact:
+    name: Akool
+    url: https://akool.com
+  x-authored-by: API Evangelist
+  x-source: https://docs.akool.com
+servers:
+- url: https://openapi.akool.com
+  description: Akool OpenAPI
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Live Avatar
+  description: Real-time streaming avatar sessions over WebRTC (Agora / LiveKit / TRTC).
+paths:
+  /api/open/v4/liveAvatar/avatar/list:
+    get:
+      operationId: listLiveAvatars
+      tags:
+      - Live Avatar
+      summary: List streaming avatars
+      description: Retrieve available streaming avatars with optional page and size pagination.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A list of streaming avatars.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/open/v4/liveAvatar/session/create:
+    post:
+      operationId: createLiveAvatarSession
+      tags:
+      - Live Avatar
+      summary: Create a live avatar session
+      description: Open a real-time streaming avatar session. The session media is carried over a caller-selected third-party WebRTC transport - stream_type is agora (default), livekit, or trtc - and the corresponding credentials (agora_channel / agora_token, or livekit_url / livekit_token, etc.) are supplied by the caller. Akool itself does not expose a proprietary WebSocket for the media stream.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LiveAvatarSessionRequest'
+      responses:
+        '200':
+          description: Session created; contains _id, status, stream_type, and credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveAvatarSession'
+  /api/open/v4/liveAvatar/session/close:
+    post:
+      operationId: closeLiveAvatarSession
+      tags:
+      - Live Avatar
+      summary: Close a live avatar session
+      description: Close an open streaming avatar session by id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+      responses:
+        '200':
+          description: Session closed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+components:
+  schemas:
+    LiveAvatarSession:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: object
+          properties:
+            _id:
+              type: string
+            uid:
+              type: integer
+            status:
+              type: integer
+              description: 1=queueing, 2=processing, 3=completed, 4=failed.
+            stream_type:
+              type: string
+            credentials:
+              type: object
+              description: Echo of the WebRTC transport credentials provided.
+    LiveAvatarSessionRequest:
+      type: object
+      properties:
+        avatar_id:
+          type: string
+        stream_type:
+          type: string
+          description: agora (default), livekit, or trtc.
+        agora_channel:
+          type: string
+        agora_token:
+          type: string
+        agora_uid:
+          type: integer
+        agora_app_id:
+          type: string
+        livekit_url:
+          type: string
+        livekit_token:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer token minted from clientId / clientSecret via POST /api/open/v3/getToken. Passed as `Authorization: Bearer {token}`.'
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Direct API key passed as the `x-api-key` header (no token step required).

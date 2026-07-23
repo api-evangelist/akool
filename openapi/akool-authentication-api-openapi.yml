@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info:
+  title: Akool Open Authentication API
+  description: 'The Akool OpenAPI exposes Akool''s generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool''s public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool''s own published OpenAPI files for exhaustive field detail.'
+  version: '1.0'
+  contact:
+    name: Akool
+    url: https://akool.com
+  x-authored-by: API Evangelist
+  x-source: https://docs.akool.com
+servers:
+- url: https://openapi.akool.com
+  description: Akool OpenAPI
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Authentication
+  description: Mint a Bearer token from a clientId / clientSecret pair.
+paths:
+  /api/open/v3/getToken:
+    post:
+      operationId: getToken
+      tags:
+      - Authentication
+      summary: Get an API token
+      description: Exchange a clientId and clientSecret for a Bearer token used in the Authorization header. Alternatively, callers may skip this step and pass a direct `x-api-key` header on each request.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - clientId
+              - clientSecret
+              properties:
+                clientId:
+                  type: string
+                clientSecret:
+                  type: string
+      responses:
+        '200':
+          description: A token response (code 1000 on success).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  token:
+                    type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer token minted from clientId / clientSecret via POST /api/open/v3/getToken. Passed as `Authorization: Bearer {token}`.'
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Direct API key passed as the `x-api-key` header (no token step required).

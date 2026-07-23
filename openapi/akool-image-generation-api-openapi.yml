@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: Akool Open Authentication Image Generation API
+  description: 'The Akool OpenAPI exposes Akool''s generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool''s public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool''s own published OpenAPI files for exhaustive field detail.'
+  version: '1.0'
+  contact:
+    name: Akool
+    url: https://akool.com
+  x-authored-by: API Evangelist
+  x-source: https://docs.akool.com
+servers:
+- url: https://openapi.akool.com
+  description: Akool OpenAPI
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Image Generation
+  description: Text-to-image and image-to-image generation.
+paths:
+  /api/open/v4/content/image/createBySourcePrompt:
+    post:
+      operationId: createImageBySourcePrompt
+      tags:
+      - Image Generation
+      summary: Generate an image (text-to-image / image-to-image)
+      description: Generate images from a text prompt, optionally conditioned on source_images for image-to-image. Controls include model_name, scale (aspect ratio), resolution (1080p or 4k), and batch_quantity (1-4). Poll status with the image info endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageGenerateRequest'
+      responses:
+        '200':
+          description: Task accepted; contains _id and image_status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageTask'
+  /api/open/v3/content/image/infobymodelid:
+    get:
+      operationId: getImageInfoByModelId
+      tags:
+      - Image Generation
+      summary: Poll image status
+      description: Retrieve image generation status and result URL by image_model_id.
+      parameters:
+      - name: image_model_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Current status and result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageTask'
+components:
+  schemas:
+    ImageTask:
+      type: object
+      description: Common asynchronous image task envelope.
+      properties:
+        code:
+          type: integer
+        _id:
+          type: string
+        image_status:
+          type: integer
+          description: 1=queueing, 2=processing, 3=completed, 4=failed.
+        deduction_credit:
+          type: number
+          description: Credits deducted for the request.
+    ImageGenerateRequest:
+      type: object
+      required:
+      - prompt
+      properties:
+        prompt:
+          type: string
+        model_name:
+          type: string
+        source_images:
+          type: array
+          description: URLs for image-to-image transformation.
+          items:
+            type: string
+        scale:
+          type: string
+          description: Aspect ratio such as 1:1, 16:9, 4:3.
+        resolution:
+          type: string
+          description: 1080p or 4k.
+        batch_quantity:
+          type: integer
+          description: 1-4 images per request.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer token minted from clientId / clientSecret via POST /api/open/v3/getToken. Passed as `Authorization: Bearer {token}`.'
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Direct API key passed as the `x-api-key` header (no token step required).

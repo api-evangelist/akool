@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Akool Open Authentication Video Translation API
+  description: 'The Akool OpenAPI exposes Akool''s generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool''s public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool''s own published OpenAPI files for exhaustive field detail.'
+  version: '1.0'
+  contact:
+    name: Akool
+    url: https://akool.com
+  x-authored-by: API Evangelist
+  x-source: https://docs.akool.com
+servers:
+- url: https://openapi.akool.com
+  description: Akool OpenAPI
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Video Translation
+  description: Translate a video into other languages with optional lip-sync.
+paths:
+  /api/open/v3/language/list:
+    get:
+      operationId: listTranslationLanguages
+      tags:
+      - Video Translation
+      summary: List supported translation languages
+      description: Returns the languages supported for video translation, including language names, codes, and flag icon URLs.
+      responses:
+        '200':
+          description: A list of supported languages.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+  /api/open/v3/content/video/createbytranslate:
+    post:
+      operationId: createByTranslate
+      tags:
+      - Video Translation
+      summary: Create a video translation
+      description: Translate a source video (url) into one or more target languages, with optional lipsync, speaker_num detection, remove_bgm, and caption_type handling. Poll status by the returned _id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoTranslateRequest'
+      responses:
+        '200':
+          description: Task accepted; contains _id and video_status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoTask'
+components:
+  schemas:
+    VideoTranslateRequest:
+      type: object
+      required:
+      - url
+      - language
+      properties:
+        url:
+          type: string
+          description: The video URL to translate.
+        language:
+          type: string
+          description: Target language(s), comma-separated.
+        source_language:
+          type: string
+          description: Original language; DEFAULT auto-detects.
+        lipsync:
+          type: boolean
+        speaker_num:
+          type: integer
+        remove_bgm:
+          type: boolean
+        caption_type:
+          type: integer
+        webhookUrl:
+          type: string
+    VideoTask:
+      type: object
+      description: Common asynchronous video task envelope.
+      properties:
+        code:
+          type: integer
+          description: 1000 indicates success.
+        _id:
+          type: string
+          description: Task id used to poll status.
+        video_status:
+          type: integer
+          description: 1=queueing, 2=processing, 3=completed, 4=failed.
+        video:
+          type: string
+          description: Result video URL, available when video_status is 3.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer token minted from clientId / clientSecret via POST /api/open/v3/getToken. Passed as `Authorization: Bearer {token}`.'
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Direct API key passed as the `x-api-key` header (no token step required).

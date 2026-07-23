@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: Akool Open Authentication Face Swap API
+  description: 'The Akool OpenAPI exposes Akool''s generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool''s public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool''s own published OpenAPI files for exhaustive field detail.'
+  version: '1.0'
+  contact:
+    name: Akool
+    url: https://akool.com
+  x-authored-by: API Evangelist
+  x-source: https://docs.akool.com
+servers:
+- url: https://openapi.akool.com
+  description: Akool OpenAPI
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Face Swap
+  description: Swap a source face onto a target image or video.
+paths:
+  /api/open/v4/faceswap/faceswapPlusByImage:
+    post:
+      operationId: faceSwapPlusByImage
+      tags:
+      - Face Swap
+      summary: Face swap onto an image or video
+      description: Swap a source_url face onto a target_url image or video. Use single_face_mode for one face, or a face_mapping array for multi-face pairing. model_style is realistic, beautify, or lossless. Video jobs are asynchronous; retrieve with the result endpoint or via webhookUrl.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceSwapRequest'
+      responses:
+        '200':
+          description: Task accepted; contains data._id and data.job_id.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      job_id:
+                        type: string
+  /api/open/v3/faceswap/result/listbyids:
+    get:
+      operationId: listFaceSwapResultsByIds
+      tags:
+      - Face Swap
+      summary: Get face swap results by ids
+      description: Retrieve one or more face swap results by a comma-separated list of ids. Each result carries a faceswap_status (1=in queue, 2=processing, 3=success, 4=failed).
+      parameters:
+      - name: _ids
+        in: query
+        required: true
+        description: Comma-separated result ids.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A list of face swap results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+components:
+  schemas:
+    FaceSwapRequest:
+      type: object
+      required:
+      - source_url
+      - target_url
+      properties:
+        source_url:
+          type: string
+          description: Source (new) face image URL.
+        target_url:
+          type: string
+          description: Target image or video URL.
+        single_face_mode:
+          type: boolean
+        model_style:
+          type: string
+          description: realistic, beautify, or lossless.
+        face_enhance:
+          type: boolean
+        face_mapping:
+          type: array
+          description: Source/target face pairs for multi-face mode.
+          items:
+            type: object
+        webhookUrl:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer token minted from clientId / clientSecret via POST /api/open/v3/getToken. Passed as `Authorization: Bearer {token}`.'
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Direct API key passed as the `x-api-key` header (no token step required).

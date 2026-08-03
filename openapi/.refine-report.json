@@ -1,0 +1,26 @@
+{
+  "provider": "akool",
+  "sources": [
+    "akool-authentication-api-openapi.yml",
+    "akool-face-swap-api-openapi.yml",
+    "akool-image-generation-api-openapi.yml",
+    "akool-live-avatar-api-openapi.yml",
+    "akool-talking-avatar-api-openapi.yml",
+    "akool-talking-photo-api-openapi.yml",
+    "akool-video-translation-api-openapi.yml"
+  ],
+  "outputs": [
+    "akool-authentication-api-openapi.yml",
+    "akool-face-swap-api-openapi.yml",
+    "akool-image-generation-api-openapi.yml",
+    "akool-live-avatar-api-openapi.yml",
+    "akool-talking-avatar-api-openapi.yml",
+    "akool-talking-photo-api-openapi.yml",
+    "akool-video-translation-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

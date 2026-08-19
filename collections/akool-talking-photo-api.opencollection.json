@@ -1,0 +1,57 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool Open Authentication Talking Photo API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Talking Photo",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a talking photo video",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/content/video/createbytalkingphoto",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Animate a still portrait (talking_photo_url) with an audio track (audio_url). Optional prompt controls gestures; resolution is 720p or 1080p; webhookUrl receives an encrypted completion callback."
+        },
+        {
+          "info": {
+            "name": "Poll video status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/content/video/infobymodelid",
+            "params": [
+              {
+                "name": "video_model_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve the status and result URL of a talking photo (or other content video) task by its model id. Returns video_status and, once completed, the video URL."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool Open Authentication API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get an API token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/getToken",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Exchange a clientId and clientSecret for a Bearer token used in the Authorization header. Alternatively, callers may skip this step and pass a direct `x-api-key` header on each request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

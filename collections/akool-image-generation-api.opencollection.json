@@ -1,0 +1,57 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool Open Authentication Image Generation API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Image Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate an image (text-to-image / image-to-image)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/content/image/createBySourcePrompt",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate images from a text prompt, optionally conditioned on source_images for image-to-image. Controls include model_name, scale (aspect ratio), resolution (1080p or 4k), and batch_quantity (1-4). Poll status with the image info endpoint."
+        },
+        {
+          "info": {
+            "name": "Poll image status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/content/image/infobymodelid",
+            "params": [
+              {
+                "name": "image_model_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve image generation status and result URL by image_model_id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,236 @@
+{
+  "item": [
+    {
+      "id": "b462563c-25b2-4b9a-a890-edbde63a3613",
+      "name": "Video Translation",
+      "description": {
+        "content": "Translate a video into other languages with optional lip-sync.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "616a7352-f8f5-40a0-ad65-22bd62b6ae79",
+          "name": "List supported translation languages",
+          "request": {
+            "name": "List supported translation languages",
+            "description": {
+              "content": "Returns the languages supported for video translation, including language names, codes, and flag icon URLs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "open",
+                "v3",
+                "language",
+                "list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3bb55f1b-3f80-42b9-8e40-0b674efcf099",
+              "name": "A list of supported languages.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "open",
+                    "v3",
+                    "language",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 4144\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8602f92a-63bc-406e-806b-7c2f487d84dd",
+          "name": "Create a video translation",
+          "request": {
+            "name": "Create a video translation",
+            "description": {
+              "content": "Translate a source video (url) into one or more target languages, with optional lipsync, speaker_num detection, remove_bgm, and caption_type handling. Poll status by the returned _id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "open",
+                "v3",
+                "content",
+                "video",
+                "createbytranslate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<string>\",\n  \"language\": \"<string>\",\n  \"source_language\": \"<string>\",\n  \"lipsync\": \"<boolean>\",\n  \"speaker_num\": \"<integer>\",\n  \"remove_bgm\": \"<boolean>\",\n  \"caption_type\": \"<integer>\",\n  \"webhookUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1144b01e-6ef1-45cc-b980-3d7c0b383916",
+              "name": "Task accepted; contains _id and video_status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "open",
+                    "v3",
+                    "content",
+                    "video",
+                    "createbytranslate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"language\": \"<string>\",\n  \"source_language\": \"<string>\",\n  \"lipsync\": \"<boolean>\",\n  \"speaker_num\": \"<integer>\",\n  \"remove_bgm\": \"<boolean>\",\n  \"caption_type\": \"<integer>\",\n  \"webhookUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1908,\n  \"_id\": \"string\",\n  \"video_status\": 3673,\n  \"video\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.akool.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5e1f7aed-c3de-4670-8923-11c66c083e53",
+    "name": "Akool Open Authentication Video Translation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Akool OpenAPI exposes Akool's generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool's public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool's own published OpenAPI files for exhaustive field detail.\n\nContact Support:\n Name: Akool",
+      "type": "text/plain"
+    }
+  }
+}

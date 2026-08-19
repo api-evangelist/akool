@@ -1,0 +1,250 @@
+{
+  "item": [
+    {
+      "id": "2f87b64f-745c-489a-ad18-cc2706324888",
+      "name": "Talking Photo",
+      "description": {
+        "content": "Animate a still portrait into a talking video.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c1abf8d1-aa7a-46e1-8c19-83f5ac219292",
+          "name": "Create a talking photo video",
+          "request": {
+            "name": "Create a talking photo video",
+            "description": {
+              "content": "Animate a still portrait (talking_photo_url) with an audio track (audio_url). Optional prompt controls gestures; resolution is 720p or 1080p; webhookUrl receives an encrypted completion callback.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "open",
+                "v3",
+                "content",
+                "video",
+                "createbytalkingphoto"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"talking_photo_url\": \"<string>\",\n  \"audio_url\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"resolution\": \"<string>\",\n  \"webhookUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a8237125-7811-49b0-8571-b071ed150248",
+              "name": "Task accepted; contains _id and video_status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "open",
+                    "v3",
+                    "content",
+                    "video",
+                    "createbytalkingphoto"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"talking_photo_url\": \"<string>\",\n  \"audio_url\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"resolution\": \"<string>\",\n  \"webhookUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 8726,\n  \"_id\": \"string\",\n  \"video_status\": 2046,\n  \"video\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "491a7254-0d2c-42ec-8b7a-a54dab4f03e8",
+          "name": "Poll video status",
+          "request": {
+            "name": "Poll video status",
+            "description": {
+              "content": "Retrieve the status and result URL of a talking photo (or other content video) task by its model id. Returns video_status and, once completed, the video URL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "open",
+                "v3",
+                "content",
+                "video",
+                "infobymodelid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "video_model_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9599a251-738c-4f10-8d9e-04ce439478c0",
+              "name": "Current status and result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "open",
+                    "v3",
+                    "content",
+                    "video",
+                    "infobymodelid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "video_model_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 8726,\n  \"_id\": \"string\",\n  \"video_status\": 2046,\n  \"video\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.akool.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "85afa759-011a-47d8-8c78-cc953eacc82e",
+    "name": "Akool Open Authentication Talking Photo API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Akool OpenAPI exposes Akool's generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool's public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool's own published OpenAPI files for exhaustive field detail.\n\nContact Support:\n Name: Akool",
+      "type": "text/plain"
+    }
+  }
+}

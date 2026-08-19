@@ -1,0 +1,148 @@
+{
+  "item": [
+    {
+      "id": "6801fe7a-eeaf-4f8b-a5ce-a254da639069",
+      "name": "Talking Avatar",
+      "description": {
+        "content": "Generate a speaking avatar video from text or audio.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "83aebbd4-7c33-4560-9552-583fbedbc306",
+          "name": "Create a talking avatar video",
+          "request": {
+            "name": "Create a talking avatar video",
+            "description": {
+              "content": "Generate a speaking avatar video. Provide an avatar_id (from the avatar list), a voice_id, and input_text, or a pre-generated audio url that takes precedence over input_text. Poll status with the video info endpoint using the returned _id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "open",
+                "v3",
+                "talkingavatar",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"avatar_from\": \"<integer>\",\n  \"avatar_id\": \"<string>\",\n  \"voice_id\": \"<string>\",\n  \"input_text\": \"<string>\",\n  \"url\": \"<string>\",\n  \"width\": \"<integer>\",\n  \"height\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0704129d-e328-4d7f-aa71-111fda8756bd",
+              "name": "Task accepted; contains _id and video_status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "open",
+                    "v3",
+                    "talkingavatar",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"avatar_from\": \"<integer>\",\n  \"avatar_id\": \"<string>\",\n  \"voice_id\": \"<string>\",\n  \"input_text\": \"<string>\",\n  \"url\": \"<string>\",\n  \"width\": \"<integer>\",\n  \"height\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2740,\n  \"_id\": \"string\",\n  \"video_status\": 313,\n  \"video\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.akool.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fb85d50c-9122-42e9-9281-915b2c0c5304",
+    "name": "Akool Open Authentication Talking Avatar API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Akool OpenAPI exposes Akool's generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool's public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool's own published OpenAPI files for exhaustive field detail.\n\nContact Support:\n Name: Akool",
+      "type": "text/plain"
+    }
+  }
+}

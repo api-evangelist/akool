@@ -1,0 +1,250 @@
+{
+  "item": [
+    {
+      "id": "2498c54c-e731-48b2-b76c-15df95db3ccb",
+      "name": "Image Generation",
+      "description": {
+        "content": "Text-to-image and image-to-image generation.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "522cd26d-0c48-42d7-b284-548885f4e879",
+          "name": "Generate an image (text-to-image / image-to-image)",
+          "request": {
+            "name": "Generate an image (text-to-image / image-to-image)",
+            "description": {
+              "content": "Generate images from a text prompt, optionally conditioned on source_images for image-to-image. Controls include model_name, scale (aspect ratio), resolution (1080p or 4k), and batch_quantity (1-4). Poll status with the image info endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "open",
+                "v4",
+                "content",
+                "image",
+                "createBySourcePrompt"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"model_name\": \"<string>\",\n  \"source_images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"scale\": \"<string>\",\n  \"resolution\": \"<string>\",\n  \"batch_quantity\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1ecac60a-16e6-4264-af7a-36ece76d49e1",
+              "name": "Task accepted; contains _id and image_status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "open",
+                    "v4",
+                    "content",
+                    "image",
+                    "createBySourcePrompt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prompt\": \"<string>\",\n  \"model_name\": \"<string>\",\n  \"source_images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"scale\": \"<string>\",\n  \"resolution\": \"<string>\",\n  \"batch_quantity\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2052,\n  \"_id\": \"string\",\n  \"image_status\": 2674,\n  \"deduction_credit\": 2305.2102800958373\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3625c49d-e5f5-480f-890a-eae32fe37e9c",
+          "name": "Poll image status",
+          "request": {
+            "name": "Poll image status",
+            "description": {
+              "content": "Retrieve image generation status and result URL by image_model_id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "open",
+                "v3",
+                "content",
+                "image",
+                "infobymodelid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "image_model_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1228f081-2f47-4808-a9e3-198efe031a17",
+              "name": "Current status and result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "open",
+                    "v3",
+                    "content",
+                    "image",
+                    "infobymodelid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "image_model_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2052,\n  \"_id\": \"string\",\n  \"image_status\": 2674,\n  \"deduction_credit\": 2305.2102800958373\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.akool.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "30eb7dda-05ca-47e9-8b10-55f364b86c54",
+    "name": "Akool Open Authentication Image Generation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Akool OpenAPI exposes Akool's generative AI video and image tools over HTTPS REST under https://openapi.akool.com. Covered here are the Talking Avatar, Talking Photo, Face Swap, Video Translation, Image Generation, and Live Avatar (real-time streaming) products. Generation is asynchronous: callers create a task and either poll by id or receive an encrypted webhook callback when the task completes (video_status / image_status / job status 1=queueing, 2=processing, 3=completed, 4=failed). Requests authenticate with an `Authorization: Bearer {token}` header (token minted from clientId / clientSecret at POST /api/open/v3/getToken) or a direct `x-api-key` header. This document is authored by API Evangelist from Akool's public documentation (docs.akool.com) and hand-models request/response shapes at a high level; consult the live docs and Akool's own published OpenAPI files for exhaustive field detail.\n\nContact Support:\n Name: Akool",
+      "type": "text/plain"
+    }
+  }
+}

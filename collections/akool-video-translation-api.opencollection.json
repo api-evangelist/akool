@@ -1,0 +1,50 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool Open Authentication Video Translation API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Video Translation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List supported translation languages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/language/list"
+          },
+          "docs": "Returns the languages supported for video translation, including language names, codes, and flag icon URLs."
+        },
+        {
+          "info": {
+            "name": "Create a video translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/content/video/createbytranslate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Translate a source video (url) into one or more target languages, with optional lipsync, speaker_num detection, remove_bgm, and caption_type handling. Poll status by the returned _id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

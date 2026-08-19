@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool Open Authentication Live Avatar API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Live Avatar",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List streaming avatars",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v4/liveAvatar/avatar/list",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve available streaming avatars with optional page and size pagination."
+        },
+        {
+          "info": {
+            "name": "Create a live avatar session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/liveAvatar/session/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Open a real-time streaming avatar session. The session media is carried over a caller-selected third-party WebRTC transport - stream_type is agora (default), livekit, or trtc - and the corresponding credentials (agora_channel / agora_token, or livekit_url / livekit_token, etc.) are supplied by the caller. Akool itself does not expose a proprietary WebSocket for the media stream."
+        },
+        {
+          "info": {
+            "name": "Close a live avatar session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/liveAvatar/session/close",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Close an open streaming avatar session by id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

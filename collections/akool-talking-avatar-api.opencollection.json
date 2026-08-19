@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool Open Authentication Talking Avatar API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Talking Avatar",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a talking avatar video",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v3/talkingavatar/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a speaking avatar video. Provide an avatar_id (from the avatar list), a voice_id, and input_text, or a pre-generated audio url that takes precedence over input_text. Poll status with the video info endpoint using the returned _id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

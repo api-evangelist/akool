@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akool Open Authentication Face Swap API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Face Swap",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Face swap onto an image or video",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.akool.com/api/open/v4/faceswap/faceswapPlusByImage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Swap a source_url face onto a target_url image or video. Use single_face_mode for one face, or a face_mapping array for multi-face pairing. model_style is realistic, beautify, or lossless. Video jobs are asynchronous; retrieve with the result endpoint or via webhookUrl."
+        },
+        {
+          "info": {
+            "name": "Get face swap results by ids",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.akool.com/api/open/v3/faceswap/result/listbyids",
+            "params": [
+              {
+                "name": "_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated result ids."
+              }
+            ]
+          },
+          "docs": "Retrieve one or more face swap results by a comma-separated list of ids. Each result carries a faceswap_status (1=in queue, 2=processing, 3=success, 4=failed)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

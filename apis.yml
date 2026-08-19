@@ -36,7 +36,7 @@ tags:
 - Live Avatar
 created: '2026-07-11'
 modified: '2026-07-11'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: akool:akool-authentication-api
   name: Akool Authentication API

@@ -120,6 +120,8 @@ apis:
   humanURL: https://docs.akool.com/ai-tools-suite/talking-avatar
   baseURL: https://openapi.akool.com
   tags:
+  - Image-Generation
+  tags_raw:
   - Image Generation
   properties:
   - type: OpenAPI

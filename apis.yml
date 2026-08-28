@@ -11,6 +11,18 @@ description: Akool is a generative AI platform for video and imagery - talking
   callers create a task, then poll by id or receive an encrypted webhook callback
   when the task completes. The Live Avatar product opens a real-time session whose
   media is carried over a third-party WebRTC transport (Agora, LiveKit, or TRTC).
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve

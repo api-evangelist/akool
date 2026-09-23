@@ -1,0 +1,31 @@
+# Front Door AI Index — akool — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: akool
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: akool.com
+  final_host: akool.com
+  ownership: own
+  owner: akool
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 61
+  host_score: 61
+  density: 21.08
+  words: 2894
+  tiers:
+    agentic: 0
+    core: 60
+    model: 1
+  ambiguous: 5
+  top_terms:
+    AI: 47
+    generative ai: 9
+    smart: 4
+    gen ai: 3
+    GPT: 1
+    LLMs: 1
+    automation: 1

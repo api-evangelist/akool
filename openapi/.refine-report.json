@@ -1,13 +1,7 @@
 {
   "provider": "akool",
   "sources": [
-    "akool-authentication-api-openapi.yml",
-    "akool-face-swap-api-openapi.yml",
-    "akool-image-generation-api-openapi.yml",
-    "akool-live-avatar-api-openapi.yml",
-    "akool-talking-avatar-api-openapi.yml",
-    "akool-talking-photo-api-openapi.yml",
-    "akool-video-translation-api-openapi.yml"
+    "_ae-authored/akool-openapi.yml"
   ],
   "outputs": [
     "akool-authentication-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "akool-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "akool-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "akool-face-swap-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "akool-image-generation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "akool-live-avatar-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "akool-talking-avatar-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "akool-talking-photo-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "akool-video-translation-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

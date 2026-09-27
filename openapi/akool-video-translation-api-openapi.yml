@@ -61,22 +61,6 @@ paths:
                 $ref: '#/components/schemas/VideoTask'
 components:
   schemas:
-    VideoTask:
-      type: object
-      description: Common asynchronous video task envelope.
-      properties:
-        code:
-          type: integer
-          description: 1000 indicates success.
-        _id:
-          type: string
-          description: Task id used to poll status.
-        video_status:
-          type: integer
-          description: 1=queueing, 2=processing, 3=completed, 4=failed.
-        video:
-          type: string
-          description: Result video URL, available when video_status is 3.
     VideoTranslateRequest:
       type: object
       required:
@@ -102,6 +86,22 @@ components:
           type: integer
         webhookUrl:
           type: string
+    VideoTask:
+      type: object
+      description: Common asynchronous video task envelope.
+      properties:
+        code:
+          type: integer
+          description: 1000 indicates success.
+        _id:
+          type: string
+          description: Task id used to poll status.
+        video_status:
+          type: integer
+          description: 1=queueing, 2=processing, 3=completed, 4=failed.
+        video:
+          type: string
+          description: Result video URL, available when video_status is 3.
   securitySchemes:
     bearerAuth:
       type: http

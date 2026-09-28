@@ -16,54 +16,65 @@ deployment:
 tools_count: 25
 tools:
 - name: voice_list
-  description: ''
+  description: Get a list of available voice models for text-to-speech.
 - name: voice_result
-  description: ''
+  description: Get the result of a text-to-speech task by its ID.
 - name: image_create
-  description: ''
+  description: Generate an image from a text prompt (text-to-image) or from a source image (image-to-image).
+    Consumes credits.
 - name: image_info
-  description: ''
+  description: Retrieve information about a previously generated image by its model ID.
 - name: image_upscale
-  description: ''
+  description: Generate a 4K upscaled version (U1-U4) or a variant (V1-V4) of an existing generated image.
+    Consumes credits.
 - name: audio_tts
-  description: ''
+  description: Convert text to speech using an existing voice model. Returns task info for async processing.
 - name: avatar_list
-  description: ''
+  description: Get a paginated list of available talking avatars. Can filter by type and source.
 - name: avatar_detail
-  description: ''
+  description: Get detailed information about a specific avatar by its ID.
 - name: faceswap_image
-  description: ''
+  description: Swap a face in an image using Face Swap Pro V4 — highest quality, single face. Provide
+    source face and target image.
 - name: faceswap_plus
-  description: ''
+  description: Recommended face swap — supports single or multi-face, image and video targets. Uses akool_faceswap_classic_plus
+    model.
 - name: faceswap_video
-  description: ''
+  description: Swap faces in a video. Credit consumption is based on video duration.
 - name: faceswap_result
-  description: ''
+  description: Query face swap results by comma-separated IDs.
 - name: faceswap_delete
-  description: ''
+  description: Delete face swap result records by comma-separated IDs.
 - name: faceswap_live
-  description: ''
+  description: Create a real-time live face swap streaming session. Returns Agora stream connection info.
 - name: video_image2video_create
-  description: ''
+  description: Generate a video from a source image with a text prompt describing the desired motion.
+    Consumes credits.
 - name: video_image2video_results
-  description: ''
+  description: Query video generation results by comma-separated IDs.
 - name: video_image2video_effects
-  description: ''
+  description: Get available special effects that can be applied during image-to-video generation.
 - name: video_image2video_update_audio
-  description: ''
+  description: Add or replace audio on an existing completed image-to-video result.
 - name: video_image2video_delete
-  description: ''
+  description: Delete video generation records by comma-separated IDs.
 - name: account_credit
-  description: ''
+  description: Query the available credit balance for the authenticated account.
 - name: account_models
-  description: ''
+  description: 'Query available AI models and their parameters. Types: 1501=Image-to-Video, 1502=Text-to-Video,
+    2101=Character Swap.'
 - name: character_swap_create
-  description: ''
+  description: Animate a character by combining a person image with a source video. Generates a new video
+    with the character performing the video motions. Consumes credits.
 - name: character_swap_result
-  description: ''
+  description: Query the status and result of a character swap task by its video model ID.
 - name: facedetect_detect
-  description: ''
+  description: Detect faces in an image or video URL. Returns 6-point landmarks, bounding boxes, and optionally
+    cropped face image URLs.
 - name: facedetect_analyze
-  description: ''
+  description: Analyze multiple image frames to identify and deduplicate persons across frames. Useful
+    for building face_mapping for faceswap_plus multi-face workflows.
 tools_source: live tools/list via initialize handshake, 2026-09-11 (signals/audit_mcp_authorship.py --probe)
 authorship: provider
+descriptions_source: live tools/list (authorship probe or saved capture); filled by backfill-tools-from-authorship.py
+  --descriptions, 2026-09-28

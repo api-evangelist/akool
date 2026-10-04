@@ -100,26 +100,6 @@ paths:
                     type: string
 components:
   schemas:
-    LiveAvatarSessionRequest:
-      type: object
-      properties:
-        avatar_id:
-          type: string
-        stream_type:
-          type: string
-          description: agora (default), livekit, or trtc.
-        agora_channel:
-          type: string
-        agora_token:
-          type: string
-        agora_uid:
-          type: integer
-        agora_app_id:
-          type: string
-        livekit_url:
-          type: string
-        livekit_token:
-          type: string
     LiveAvatarSession:
       type: object
       properties:
@@ -140,6 +120,26 @@ components:
             credentials:
               type: object
               description: Echo of the WebRTC transport credentials provided.
+    LiveAvatarSessionRequest:
+      type: object
+      properties:
+        avatar_id:
+          type: string
+        stream_type:
+          type: string
+          description: agora (default), livekit, or trtc.
+        agora_channel:
+          type: string
+        agora_token:
+          type: string
+        agora_uid:
+          type: integer
+        agora_app_id:
+          type: string
+        livekit_url:
+          type: string
+        livekit_token:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

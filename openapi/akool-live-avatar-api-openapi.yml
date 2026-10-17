@@ -100,26 +100,6 @@ paths:
                     type: string
 components:
   schemas:
-    LiveAvatarSession:
-      type: object
-      properties:
-        code:
-          type: integer
-        data:
-          type: object
-          properties:
-            _id:
-              type: string
-            uid:
-              type: integer
-            status:
-              type: integer
-              description: 1=queueing, 2=processing, 3=completed, 4=failed.
-            stream_type:
-              type: string
-            credentials:
-              type: object
-              description: Echo of the WebRTC transport credentials provided.
     LiveAvatarSessionRequest:
       type: object
       properties:
@@ -140,6 +120,26 @@ components:
           type: string
         livekit_token:
           type: string
+    LiveAvatarSession:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: object
+          properties:
+            _id:
+              type: string
+            uid:
+              type: integer
+            status:
+              type: integer
+              description: 1=queueing, 2=processing, 3=completed, 4=failed.
+            stream_type:
+              type: string
+            credentials:
+              type: object
+              description: Echo of the WebRTC transport credentials provided.
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,0 +1,968 @@
+{
+  "endpoint": "https://openapi.akool.com/mcp/v1",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2025-06-18",
+  "server_info": {
+    "name": "open-api-mcp",
+    "version": "0.0.0"
+  },
+  "result": {
+    "tools": [
+      {
+        "name": "voice_list",
+        "title": "List Voice Models",
+        "description": "Get a list of available voice models for text-to-speech.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "integer",
+              "description": "Voice type: 1=cloned voices, 2=Akool system voices (default: 2)"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "voice_result",
+        "title": "Get TTS Task Result",
+        "description": "Get the result of a text-to-speech task by its ID.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "TTS task ID returned by audio_tts"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "image_create",
+        "title": "Create Image by Prompt",
+        "description": "Generate an image from a text prompt (text-to-image) or from a source image (image-to-image). Consumes credits.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 5000,
+              "description": "Text prompt describing the image to generate"
+            },
+            "source_image": {
+              "type": "string",
+              "format": "uri",
+              "description": "Source image URL for image-to-image generation"
+            },
+            "scale": {
+              "type": "string",
+              "description": "Aspect ratio: \"1:1\", \"4:3\", \"3:4\", \"16:9\", \"9:16\", \"3:2\", \"2:3\" (default: \"1:1\")"
+            },
+            "webhookUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "image_info",
+        "title": "Get Image Info",
+        "description": "Retrieve information about a previously generated image by its model ID.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "image_model_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The ID of the image model/result to look up"
+            }
+          },
+          "required": [
+            "image_model_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "image_upscale",
+        "title": "Upscale or Variant Image",
+        "description": "Generate a 4K upscaled version (U1-U4) or a variant (V1-V4) of an existing generated image. Consumes credits.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The ID of the source image to upscale/vary"
+            },
+            "button": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Button type: U1-U4 for 4K upscale, V1-V4 for variation"
+            },
+            "webhookUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "_id",
+            "button"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "audio_tts",
+        "title": "Text to Speech",
+        "description": "Convert text to speech using an existing voice model. Returns task info for async processing.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "input_text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 5000,
+              "description": "Text to convert to speech (max 5000 characters)"
+            },
+            "voice_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ID of the voice model to use (from voice_list)"
+            },
+            "speed": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2,
+              "description": "Playback speed 0.5-2.0 (default: 1)"
+            },
+            "emotion": {
+              "type": "string",
+              "description": "Emotion preset (if supported by voice)"
+            },
+            "pitch": {
+              "type": "number",
+              "description": "Pitch adjustment"
+            },
+            "webhookUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "input_text",
+            "voice_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "avatar_list",
+        "title": "List Avatars",
+        "description": "Get a paginated list of available talking avatars. Can filter by type and source.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "integer",
+              "description": "Avatar type: 1=static, 2=animated"
+            },
+            "from": {
+              "type": "integer",
+              "description": "Source identifier filter"
+            },
+            "page": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Page number (default: 1)"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "description": "Items per page (default: 100)"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "avatar_detail",
+        "title": "Get Avatar Detail",
+        "description": "Get detailed information about a specific avatar by its ID.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Avatar ID"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "faceswap_image",
+        "title": "Face Swap Image (V4)",
+        "description": "Swap a face in an image using Face Swap Pro V4 — highest quality, single face. Provide source face and target image.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "sourceImage": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Source face image URL"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "description": "Source face image(s)"
+            },
+            "targetImage": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Target image URL"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "description": "Target image(s) where face will be applied"
+            },
+            "face_enhance": {
+              "type": "boolean",
+              "description": "Enable face enhancement"
+            },
+            "webhookUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "sourceImage",
+            "targetImage"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "faceswap_plus",
+        "title": "Face Swap Plus (V4)",
+        "description": "Recommended face swap — supports single or multi-face, image and video targets. Uses akool_faceswap_classic_plus model.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "source_url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Source face image URL"
+            },
+            "target_url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Target image or video URL"
+            },
+            "model_style": {
+              "type": "string",
+              "enum": [
+                "realistic",
+                "beautify",
+                "lossless"
+              ],
+              "description": "Model style (default: realistic)"
+            },
+            "face_enhance": {
+              "type": "boolean",
+              "description": "Enable face enhancement"
+            },
+            "single_face_mode": {
+              "type": "boolean",
+              "description": "Single face mode — no face_mapping required (default: true)"
+            },
+            "face_mapping": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_face_info": {
+                    "type": "object",
+                    "properties": {
+                      "face_url": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "bbox": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "minItems": 4,
+                        "maxItems": 4
+                      }
+                    },
+                    "required": [
+                      "face_url"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "target_face_info": {
+                    "type": "object",
+                    "properties": {
+                      "bbox": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "minItems": 4,
+                        "maxItems": 4
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "source_face_info",
+                  "target_face_info"
+                ],
+                "additionalProperties": false
+              },
+              "description": "Face mapping for multi-face swap (required when single_face_mode=false)"
+            },
+            "webhookUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "source_url",
+            "target_url"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "faceswap_video",
+        "title": "Face Swap Video (V3)",
+        "description": "Swap faces in a video. Credit consumption is based on video duration.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "sourceImage": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Source face image URL"
+                  },
+                  "opts": {
+                    "type": "string",
+                    "description": "Face coordinates"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "description": "Source face images"
+            },
+            "targetVideo": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Target video URL"
+                  },
+                  "opts": {
+                    "type": "string",
+                    "description": "Video options"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "description": "Target video(s)"
+            },
+            "face_enhance": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Face enhancement level (0-100)"
+            },
+            "webhookUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "sourceImage",
+            "targetVideo"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "faceswap_result",
+        "title": "Get Face Swap Results",
+        "description": "Query face swap results by comma-separated IDs.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "_ids": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Comma-separated list of result IDs"
+            }
+          },
+          "required": [
+            "_ids"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "faceswap_delete",
+        "title": "Delete Face Swap Results",
+        "description": "Delete face swap result records by comma-separated IDs.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "_ids": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Comma-separated list of result IDs to delete"
+            }
+          },
+          "required": [
+            "_ids"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "faceswap_live",
+        "title": "Live Face Swap",
+        "description": "Create a real-time live face swap streaming session. Returns Agora stream connection info.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "sourceImage": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Source face image URL"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "description": "Source face image(s)"
+            },
+            "targetImage": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Target stream URL"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "description": "Target stream/camera image(s)"
+            }
+          },
+          "required": [
+            "sourceImage"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "video_image2video_create",
+        "title": "Create Image-to-Video",
+        "description": "Generate a video from a source image with a text prompt describing the desired motion. Consumes credits.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "image_url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Source image URL to animate"
+            },
+            "prompt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 5000,
+              "description": "Text prompt describing desired motion"
+            },
+            "resolution": {
+              "type": "string",
+              "enum": [
+                "720p",
+                "1080p",
+                "4k"
+              ],
+              "description": "Video resolution (default: 720p)"
+            },
+            "video_length": {
+              "type": "integer",
+              "description": "Video duration in seconds: 5 or 10 (default: 5)"
+            },
+            "negative_prompt": {
+              "type": "string",
+              "description": "What to avoid in the video"
+            },
+            "extend_prompt": {
+              "type": "boolean",
+              "description": "Let the algorithm extend the prompt"
+            },
+            "audio_url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Optional audio URL for soundtrack"
+            },
+            "audio_type": {
+              "type": "integer",
+              "description": "Audio type: 1=AI generated, 2=upload, 3=none (default: 3)"
+            },
+            "effect_code": {
+              "type": "string",
+              "description": "Special effect identifier (overrides prompt)"
+            },
+            "is_premium_model": {
+              "type": "boolean",
+              "description": "Use premium HD model"
+            },
+            "webhookurl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "image_url",
+            "prompt"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "video_image2video_results",
+        "title": "Get Image-to-Video Results",
+        "description": "Query video generation results by comma-separated IDs.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "ids": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Comma-separated list of video _id values"
+            }
+          },
+          "required": [
+            "ids"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "video_image2video_effects",
+        "title": "List Image-to-Video Effects",
+        "description": "Get available special effects that can be applied during image-to-video generation.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "description": "Filter effects by provider name"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "video_image2video_update_audio",
+        "title": "Update Image-to-Video Audio",
+        "description": "Add or replace audio on an existing completed image-to-video result.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "MongoDB _id of the completed video"
+            },
+            "audio_url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Audio URL to add to the video"
+            }
+          },
+          "required": [
+            "id",
+            "audio_url"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "video_image2video_delete",
+        "title": "Delete Image-to-Video Results",
+        "description": "Delete video generation records by comma-separated IDs.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "ids": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Comma-separated list of video _id values to delete"
+            }
+          },
+          "required": [
+            "ids"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "account_credit",
+        "title": "Get Account Credit Balance",
+        "description": "Query the available credit balance for the authenticated account.",
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "account_models",
+        "title": "List Available AI Models",
+        "description": "Query available AI models and their parameters. Types: 1501=Image-to-Video, 1502=Text-to-Video, 2101=Character Swap.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "types": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 1,
+              "description": "Array of model type codes: 1501=I2V, 1502=T2V, 2101=CharacterSwap"
+            }
+          },
+          "required": [
+            "types"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "character_swap_create",
+        "title": "Create Character Swap",
+        "description": "Animate a character by combining a person image with a source video. Generates a new video with the character performing the video motions. Consumes credits.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "string",
+              "format": "uri",
+              "description": "Character image URL"
+            },
+            "video": {
+              "type": "string",
+              "format": "uri",
+              "description": "Source motion video URL (max 120 seconds)"
+            },
+            "duration": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 120,
+              "description": "Duration in seconds (auto-detected from video if omitted)"
+            },
+            "resolution": {
+              "type": "string",
+              "enum": [
+                "480p",
+                "720p",
+                "1080p"
+              ],
+              "description": "Output resolution (default: 720p)"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "animate",
+                "replace"
+              ],
+              "description": "Mode: animate=animate character, replace=replace character (default: animate)"
+            },
+            "prompt": {
+              "type": "string",
+              "maxLength": 500,
+              "description": "Optional prompt text"
+            },
+            "webhookurl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Webhook URL for async result"
+            }
+          },
+          "required": [
+            "image",
+            "video"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "character_swap_result",
+        "title": "Get Character Swap Result",
+        "description": "Query the status and result of a character swap task by its video model ID.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "video_model_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Video model ID returned by character_swap_create"
+            }
+          },
+          "required": [
+            "video_model_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "facedetect_detect",
+        "title": "Detect Faces",
+        "description": "Detect faces in an image or video URL. Returns 6-point landmarks, bounding boxes, and optionally cropped face image URLs.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Image or video URL to detect faces in"
+            },
+            "num_frames": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Number of frames to sample for video analysis (default: 5)"
+            },
+            "return_face_url": {
+              "type": "boolean",
+              "description": "Return cropped face image URLs (default: false)"
+            },
+            "single_face": {
+              "type": "boolean",
+              "description": "Return only the largest face (default: false)"
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      },
+      {
+        "name": "facedetect_analyze",
+        "title": "Analyze Frames for Face Swap",
+        "description": "Analyze multiple image frames to identify and deduplicate persons across frames. Useful for building face_mapping for faceswap_plus multi-face workflows.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "frame_urls": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              },
+              "minItems": 1,
+              "description": "Array of image URLs (frames) to analyze"
+            },
+            "timestamps": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "description": "Timestamps in seconds corresponding to each frame"
+            },
+            "expand_ratio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Face crop expansion ratio 0-1 (default: 0.3)"
+            }
+          },
+          "required": [
+            "frame_urls"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "execution": {
+          "taskSupport": "forbidden"
+        }
+      }
+    ]
+  }
+}

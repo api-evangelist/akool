@@ -1,4 +1,4 @@
-# Akool (akool)
+# Akool
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,98 +64,137 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Akool is a generative AI platform for video and imagery - talking avatars, talking photos, face swap, video translation with lip-sync, background change, lip sync, image generation, and a real-time streaming (live) avatar product. The Akool OpenAPI exposes these tools as an HTTPS REST API under `https://openapi.akool.com`, authenticated with a Bearer token minted from a `clientId` / `clientSecret` pair (`POST /api/open/v3/getToken`) or a direct `x-api-key` header. Generation is asynchronous: callers create a task, then poll by id or receive an encrypted webhook callback when the task completes.
+Akool is a generative AI platform for video and imagery - talking avatars, talking photos, face swap, video translation with lip-sync, background change, image generation, and a real-time streaming (live) avatar product. The Akool OpenAPI exposes these tools as an HTTPS REST API under https://openapi.akool.com, authenticated with a Bearer token minted from a clientId / clientSecret pair (or a direct x-api-key). Generation is asynchronous - callers create a task, then poll by id or receive an encrypted webhook callback when the task completes. The Live Avatar product opens a real-time session whose media is carried over a third-party WebRTC transport (Agora, LiveKit, or TRTC).
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/akool/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/akool/refs/heads/main/apis.yml)
+**Areas:** AI Avatars · Video Generation · AI Video · Face Swap · Generative AI · Talking Avatar · Video Translation · Live Avatar
 
-## Access Model (honest summary)
+## Akool on APIs.io
 
-- **Public, documented REST API.** Akool publishes a full developer area at [docs.akool.com](https://docs.akool.com) (with an `llms.txt` index and several published OpenAPI files), a public [Postman collection](https://www.postman.com/akoolai/team-workspace/collection/ddsutn3/akool-official-apis), and a GitHub org at [AKOOL-Official](https://github.com/AKOOL-Official). This is a real, live API - not a modeled placeholder.
-- **Base URL:** `https://openapi.akool.com`, with product endpoints under `/api/open/v3` and `/api/open/v4`.
-- **Auth:** exchange `clientId` + `clientSecret` for a Bearer token at `POST /api/open/v3/getToken`, or pass a direct `x-api-key` header (Akool's recommended path). Tokens expire (error code `1101`).
-- **Async by design:** create endpoints return a task id (`_id` / `job_id`); poll a status endpoint by id (`video_status` / `image_status` / `faceswap_status`: 1=queueing, 2=processing, 3=completed, 4=failed) or register a `webhookUrl` for an encrypted completion callback (AES-256-CBC `dataEncrypt`, SHA-1 `signature`).
-- **API access is plan-gated.** Programmatic access is available on the higher subscription tiers (Pro Max and above per the pricing page); generation spends credits and generated assets are retained for 7 days.
-- **The OpenAPI in this repo (`openapi/akool-openapi.yml`) is hand-modeled by API Evangelist** from the live documentation. Endpoint paths, methods, auth, and status semantics are grounded in Akool's docs; request/response field lists are representative rather than exhaustive. Akool also publishes its own per-product OpenAPI files (e.g. `https://docs.akool.com/openapi/live-avatar.yaml`) - consult those and the live docs for complete field detail. Plans, rate limits, and FinOps files are marked `reconciled: false` where exact prices/limits were not confirmed.
-- **Real-time transport, stated precisely.** The Live Avatar (Streaming Avatar) product is real-time and bidirectional, but Akool does **not** expose an Akool-operated WebSocket API. The REST control plane opens a session (`POST /api/open/v4/liveAvatar/session/create`) whose media is carried over a caller-selected third-party WebRTC transport - `stream_type` `agora` (default), `livekit`, or `trtc` - using that provider's credentials and SDK. WebRTC media transport belongs to Agora/LiveKit/Tencent, not to a documented Akool WebSocket, so no AsyncAPI document was authored. See `review.yml`.
+Everything profiled for Akool is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/akool/](https://apis.io/providers/akool/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (7)
 
-- AI Avatars
-- Video Generation
-- AI Video
-- Face Swap
-- Generative AI
-- Talking Avatar
-- Video Translation
-- Live Avatar
+- [Akool Authentication API](https://apis.io/apis/akool/akool-authentication-api/) — Mint a Bearer token from a clientId / clientSecret pair.
+- [Akool Face Swap API](https://apis.io/apis/akool/akool-face-swap-api/) — Swap a source face onto a target image or video.
+- [Akool Image Generation API](https://apis.io/apis/akool/akool-image-generation-api/) — Text-to-image and image-to-image generation.
+- [Akool Live Avatar API](https://apis.io/apis/akool/akool-live-avatar-api/) — Real-time streaming avatar sessions over WebRTC (Agora / LiveKit / TRTC).
+- [Akool Talking Avatar API](https://apis.io/apis/akool/akool-talking-avatar-api/) — Generate a speaking avatar video from text or audio.
+- [Akool Talking Photo API](https://apis.io/apis/akool/akool-talking-photo-api/) — Animate a still portrait into a talking video.
+- [Akool Video Translation API](https://apis.io/apis/akool/akool-video-translation-api/) — Translate a video into other languages with optional lip-sync.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-07-11
-- **Modified:** 2026-07-11
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Akool Talking Avatar API
+Model Context Protocol servers that expose the API to agents.
 
-Generate an expressive, speaking avatar video from an Akool or user-supplied avatar plus text or an audio track. `POST /api/open/v3/talkingavatar/create` (avatar_id, voice_id, input_text or audio url), then poll by `_id`.
+- [akool](https://apis.io/servers/akool/akool/)
 
-- **Human URL:** [https://docs.akool.com/ai-tools-suite/talking-avatar](https://docs.akool.com/ai-tools-suite/talking-avatar)
-- **Base URL:** `https://openapi.akool.com`
-- **Tags:** AI Avatars, Talking Avatar, Video Generation
+#### Agentic access (1)
 
-### Akool Talking Photo API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-Turn a still portrait into a talking video by pairing a `talking_photo_url` with an `audio_url`. `POST /api/open/v3/content/video/createbytalkingphoto`, poll `GET /api/open/v3/content/video/infobymodelid`.
+- [Akool Agentic Access](https://apis.io/agentic-access/akool/akool-agentic-access/)
 
-- **Human URL:** [https://docs.akool.com/ai-tools-suite/talking-photo](https://docs.akool.com/ai-tools-suite/talking-photo)
-- **Base URL:** `https://openapi.akool.com`
-- **Tags:** AI Avatars, Talking Photo, Video Generation
+#### Collections (8)
 
-### Akool Face Swap API
+Postman and Open Collection request collections.
 
-Swap a source face onto a target image or video, single-face or multi-face. `POST /api/open/v4/faceswap/faceswapPlusByImage`, results at `GET /api/open/v3/faceswap/result/listbyids`.
+- [Akool OpenAPI](https://apis.io/collections/akool/open-akool/)
+- [Akool Open Authentication API](https://apis.io/collections/akool/open-akool-authentication-api/)
+- [Akool Open Authentication Face Swap API](https://apis.io/collections/akool/open-akool-face-swap-api/)
+- [Akool Open Authentication Image Generation API](https://apis.io/collections/akool/open-akool-image-generation-api/)
+- [Akool Open Authentication Live Avatar API](https://apis.io/collections/akool/open-akool-live-avatar-api/)
+- [Akool Open Authentication Talking Avatar API](https://apis.io/collections/akool/open-akool-talking-avatar-api/)
+- [Akool Open Authentication Talking Photo API](https://apis.io/collections/akool/open-akool-talking-photo-api/)
+- [Akool Open Authentication Video Translation API](https://apis.io/collections/akool/open-akool-video-translation-api/)
 
-- **Human URL:** [https://docs.akool.com/ai-tools-suite/faceswap](https://docs.akool.com/ai-tools-suite/faceswap)
-- **Base URL:** `https://openapi.akool.com`
-- **Tags:** Face Swap, AI Video, Generative AI
+#### Security (1)
 
-### Akool Video Translation API
+Authentication, trust centre, and vulnerability disclosure.
 
-Translate a source video into one or more target languages with optional lip-sync. `GET /api/open/v3/language/list`, `POST /api/open/v3/content/video/createbytranslate`, then poll by `_id`.
+- [Akool Authentication](https://apis.io/security/akool/akool-authentication/)
 
-- **Human URL:** [https://docs.akool.com/ai-tools-suite/video-translation](https://docs.akool.com/ai-tools-suite/video-translation)
-- **Base URL:** `https://openapi.akool.com`
-- **Tags:** Video Translation, AI Video, Lip Sync
+#### Plans and pricing (1)
 
-### Akool Image Generation API
+Published plans, tiers and prices.
 
-Text-to-image and image-to-image generation on Flux-family models. `POST /api/open/v4/content/image/createBySourcePrompt`, poll `GET /api/open/v3/content/image/infobymodelid`.
+- [Akool Plans Pricing](https://apis.io/plans/akool/akool-plans-pricing/)
 
-- **Human URL:** [https://docs.akool.com/ai-tools-suite/image-generate/image-generate](https://docs.akool.com/ai-tools-suite/image-generate/image-generate)
-- **Base URL:** `https://openapi.akool.com`
-- **Tags:** Generative AI, Image Generation, Text to Image
+#### Rate limits (1)
 
-### Akool Live Avatar (Streaming) API
+Published request limits.
 
-Real-time, interactive streaming avatars. REST control plane lists avatars (`GET /api/open/v4/liveAvatar/avatar/list`) and manages sessions (create/list/detail/close). Session media rides a caller-selected WebRTC transport (`stream_type` agora, livekit, or trtc) via `POST /api/open/v4/liveAvatar/session/create` - not an Akool WebSocket.
+- [Akool Rate Limits](https://apis.io/rate-limits/akool/akool-rate-limits/)
 
-- **Human URL:** [https://docs.akool.com/ai-tools-suite/live-avatar](https://docs.akool.com/ai-tools-suite/live-avatar)
-- **Base URL:** `https://openapi.akool.com`
-- **Tags:** AI Avatars, Live Avatar, Real Time
+#### FinOps (1)
 
-## Common Properties
+What the API costs to run, by operation.
 
-- [Authentication](authentication/akool-authentication.yml)
-- [GitHub Organization](https://github.com/AKOOL-Official)
-- [LinkedIn](https://www.linkedin.com/company/akoolai)
+- [Akool Finops](https://apis.io/finops/akool/akool-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://akool.com)
 - [Documentation](https://docs.akool.com)
-- [Plans](plans/akool-plans-pricing.yml)
-- [Rate Limits](rate-limits/akool-rate-limits.yml)
-- [Fin Ops](finops/akool-finops.yml)
+- [Blog](https://akool.com/blog)
+- [GitHub](https://github.com/AKOOL-Official)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 17.5** — emerging · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.3 |
+| Contract quality | 13.6 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 27.1** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 5.3** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/akool/](https://apis.io/providers/akool/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Akool: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/akool/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
